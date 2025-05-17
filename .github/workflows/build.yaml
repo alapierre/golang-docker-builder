@@ -23,4 +23,4 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Run Buildx
         run: |
-          make build github
+          make github
