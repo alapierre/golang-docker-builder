@@ -11,6 +11,7 @@ Based on Alpine Image and contains some useful Golang CI/CD tools:
 - semver
 - go-junit-report
 - golangci-lint
+- openssh-client
 
 ## Sample Bitbucket pipeline
 
@@ -93,4 +94,14 @@ clean:
 
 .PHONY: gen build docker push clean
 
+````
+
+## Go mod in private bitbucket repository
+
+You need generates ssh key for pipeline (Pipelines -> SSH Keys), add public key to any private repository with go mod dependencies
+
+````yaml
+script:
+    - git config --global url."git@bitbucket.org:".insteadOf "https://bitbucket.org/"
+    - go env -w GOPRIVATE=bitbucket.org/your-workspace
 ````
