@@ -1,4 +1,4 @@
-FROM golang:1.24.3-alpine3.21
+FROM golang:1.25.1-alpine3.22
 
 LABEL maintainer="Adrian Lapierre <al@alapierre.io>"
 ARG GOLANGCI_LINT_VERSION=v2.1.6
