@@ -11,6 +11,7 @@ Based on Alpine Image and contains some useful Golang CI/CD tools:
 - semver
 - go-junit-report
 - golangci-lint
+- govulncheck
 - openssh-client
 
 ## Sample Bitbucket pipeline
