@@ -1,8 +1,8 @@
-FROM golang:1.26.1-alpine
+FROM golang:1.26.2-alpine
 
 LABEL maintainer="Adrian Lapierre <al@alapierre.io>"
-ARG GOLANGCI_LINT_VERSION=v2.7.0
-ARG CYCLONEDX_GOMOD_VERSION=v1.9.0
+ARG GOLANGCI_LINT_VERSION=v2.11.4
+ARG CYCLONEDX_GOMOD_VERSION=v1.10.0
 
 RUN apk add --no-cache git jq curl bash make openssh-client && \
     curl -L -o /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver && \
