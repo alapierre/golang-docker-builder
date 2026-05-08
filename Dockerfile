@@ -1,7 +1,7 @@
-FROM golang:1.26.2-alpine
+FROM golang:1.26.3-alpine
 
 LABEL maintainer="Adrian Lapierre <al@alapierre.io>"
-ARG GOLANGCI_LINT_VERSION=v2.11.4
+ARG GOLANGCI_LINT_VERSION=v2.12.2
 ARG CYCLONEDX_GOMOD_VERSION=v1.10.0
 
 RUN apk add --no-cache git jq curl bash make openssh-client && \
@@ -12,5 +12,6 @@ RUN apk add --no-cache git jq curl bash make openssh-client && \
     go install github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@${CYCLONEDX_GOMOD_VERSION} && \
     wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s ${GOLANGCI_LINT_VERSION}
 
+COPY ci /
 
 

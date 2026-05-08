@@ -1,9 +1,8 @@
-IMAGE_VERSION=1.26.2-alpine3
+IMAGE_VERSION=1.26.3-alpine3
 IMAGE_NAME=lapierre/golang-docker-builder
-GOLANGCI_LINT_VERSION=v2.1.6
 
 docker:
-	docker build --build-arg GOLANGCI_LINT_VERSION=$(GOLANGCI_LINT_VERSION) -t $(IMAGE_NAME):$(IMAGE_VERSION) .
+	docker build -t $(IMAGE_NAME):$(IMAGE_VERSION) .
 	docker tag $(IMAGE_NAME):$(IMAGE_VERSION) $(IMAGE_NAME):latest
 
 push:
