@@ -3,6 +3,7 @@ FROM golang:1.26.4-alpine
 LABEL maintainer="Adrian Lapierre <al@alapierre.io>"
 ARG GOLANGCI_LINT_VERSION=v2.12.2
 ARG CYCLONEDX_GOMOD_VERSION=v1.10.0
+ARG GORELEASER_VERSION=v2.47.0
 
 RUN apk add --no-cache git jq curl bash make openssh-client && \
     curl -L -o /usr/local/bin/semver https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver && \
@@ -10,6 +11,7 @@ RUN apk add --no-cache git jq curl bash make openssh-client && \
     go install github.com/jstemmer/go-junit-report@latest && \
     go install golang.org/x/vuln/cmd/govulncheck@latest && \
     go install github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@${CYCLONEDX_GOMOD_VERSION} && \
+    go install github.com/goreleaser/nfpm/v2/cmd/nfpm@${GORELEASER_VERSION} && \
     wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s ${GOLANGCI_LINT_VERSION}
 
 COPY ci /
