@@ -13,6 +13,8 @@ Based on Alpine Image and contains some useful Golang CI/CD tools:
 - golangci-lint
 - govulncheck
 - openssh-client
+- goReleaser
+- nfpm
 
 ## Sample Bitbucket pipeline
 

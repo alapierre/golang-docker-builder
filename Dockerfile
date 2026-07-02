@@ -10,6 +10,7 @@ RUN apk add --no-cache git jq curl bash make openssh-client && \
     chmod +x /usr/local/bin/semver && \
     go install github.com/jstemmer/go-junit-report@latest && \
     go install golang.org/x/vuln/cmd/govulncheck@latest && \
+    go install github.com/goreleaser/goreleaser/v2@v2.16.0 && \
     go install github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@${CYCLONEDX_GOMOD_VERSION} && \
     go install github.com/goreleaser/nfpm/v2/cmd/nfpm@${GORELEASER_VERSION} && \
     wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s ${GOLANGCI_LINT_VERSION}
