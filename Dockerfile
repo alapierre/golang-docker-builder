@@ -1,6 +1,7 @@
 FROM golang:1.26.4-alpine
 
 LABEL maintainer="Adrian Lapierre <al@alapierre.io>"
+ARG TARGETARCH
 ARG GOLANGCI_LINT_VERSION=v2.12.2
 ARG CYCLONEDX_GOMOD_VERSION=v1.10.0
 ARG NFPM_VERSION=v2.47.0
