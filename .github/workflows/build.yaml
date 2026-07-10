@@ -32,17 +32,28 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build image
-        run: |
-          docker buildx build \
-            --platform "${{ matrix.platform }}" \
-            --tag "${IMAGE_NAME}:pr-${{ matrix.suffix }}" \
-            --load .
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: ${{ matrix.platform }}
+          load: true
+          tags: ${{ env.IMAGE_NAME }}:pr-${{ matrix.suffix }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-  release:
+  release-build:
     if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            platform: linux/amd64
+            suffix: amd64
+          - runner: ubuntu-24.04-arm
+            platform: linux/arm64
+            suffix: arm64
+    runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -53,31 +64,45 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.IMAGE_NAME }}
-          tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=raw,value=latest
 
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ matrix.platform }}
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ env.IMAGE_NAME }}:${{ github.ref_name }}-${{ matrix.suffix }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  manifest:
+    if: github.event_name == 'push'
+    needs: release-build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Publish manifest
+        run: |
+          docker buildx imagetools create \
+            --tag "${IMAGE_NAME}:${GITHUB_REF_NAME}" \
+            "${IMAGE_NAME}:${GITHUB_REF_NAME}-amd64" \
+            "${IMAGE_NAME}:${GITHUB_REF_NAME}-arm64"
+          docker buildx imagetools create \
+            --tag "${IMAGE_NAME}:latest" \
+            "${IMAGE_NAME}:${GITHUB_REF_NAME}-amd64" \
+            "${IMAGE_NAME}:${GITHUB_REF_NAME}-arm64"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
