@@ -15,6 +15,7 @@ Based on Alpine Image and contains some useful Golang CI/CD tools:
 - openssh-client
 - goReleaser
 - nfpm
+- gotestsum
 
 ## Sample Bitbucket pipeline
 
@@ -27,11 +28,12 @@ definitions:
       name: Test and Build
       script:
         - mkdir -p test-reports
-        - go test ./... -v 2>&1 | go-junit-report > test-reports/report.xml
+        - gotestsum --format pkgname --junitfile test-results/unit-tests.xml -- -race -coverprofile=coverage.out ./...
         - (cd cmd/my-app/ && golangci-lint run -v)
         - go build -o my-app ./cmd/my-app/
       artifacts:
-        - test-reports/**        
+        - test-reports/**
+        - coverage.out
 
     release: &release
       name: Release Version

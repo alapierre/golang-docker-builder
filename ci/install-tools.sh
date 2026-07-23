@@ -10,6 +10,7 @@ go install github.com/jstemmer/go-junit-report@latest
 go install golang.org/x/vuln/cmd/govulncheck@latest
 go install github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@${CYCLONEDX_GOMOD_VERSION}
 go install github.com/goreleaser/goreleaser/v2@v${GORELEASER_VERSION}
+go install gotest.tools/gotestsum@v1.13.0
 
 wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s "${GOLANGCI_LINT_VERSION}"
 
