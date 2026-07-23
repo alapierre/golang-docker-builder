@@ -56,11 +56,12 @@ definitions:
         - docker
       script:
         - CURRENT_VERSION=$(git tag -l "v*" | sort -V | tail -n 1)
-        - echo "Building Docker image with tag $CURRENT_VERSION"
+        - IMAGE_VERSION=${CURRENT_VERSION#v}
+        - echo "Building Docker image with tag $IMAGE_VERSION"
         - echo $DOCKER_PASS | docker login my-registry.registry.io -u $DOCKER_USER --password-stdin
         - cd cmd/my-app
         - ls -l
-        - make docker push IMAGE_VERSION=$CURRENT_VERSION
+        - make docker push IMAGE_VERSION=$IMAGE_VERSION
 
 pipelines:
   default:
