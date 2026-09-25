@@ -17,15 +17,23 @@ wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/insta
 
 install_nfpm() {
   local version="${NFPM_VERSION#v}"
+  local target_arch="${TARGETARCH:-}"
   local nfpm_arch
   local tmpdir
   tmpdir="$(mktemp -d)"
 
-  case "${TARGETARCH}" in
+  if [ -z "${target_arch}" ]; then
+    case "$(uname -m)" in
+      x86_64) target_arch="amd64" ;;
+      aarch64|arm64) target_arch="arm64" ;;
+    esac
+  fi
+
+  case "${target_arch}" in
     amd64) nfpm_arch="x86_64" ;;
     arm64) nfpm_arch="arm64" ;;
     *)
-      echo "Unsupported TARGETARCH=${TARGETARCH}" >&2
+      echo "Unsupported TARGETARCH=${target_arch}" >&2
       return 1
       ;;
   esac

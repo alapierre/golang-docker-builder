@@ -1,4 +1,4 @@
-IMAGE_VERSION=1.27.0-alpine3
+IMAGE_VERSION=1.27.1-alpine3
 IMAGE_NAME=lapierre/golang-docker-builder
 
 docker:
