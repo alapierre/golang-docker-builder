@@ -1,11 +1,11 @@
-FROM golang:1.26.6-alpine
+FROM golang:1.27.0-alpine
 
 LABEL maintainer="Adrian Lapierre <al@alapierre.io>"
 ARG TARGETARCH
-ARG GOLANGCI_LINT_VERSION=v2.12.2
-ARG CYCLONEDX_GOMOD_VERSION=v1.11.0
+ARG GOLANGCI_LINT_VERSION=v2.14.2
+ARG CYCLONEDX_GOMOD_VERSION=v1.12.0
 ARG NFPM_VERSION=v2.47.0
-ARG GORELEASER_VERSION=2.17.1
+ARG GORELEASER_VERSION=2.18.2
 
 RUN apk add --no-cache git jq curl bash make openssh-client docker-cli docker-cli-buildx
 
