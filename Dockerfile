@@ -1,4 +1,4 @@
-FROM golang:1.27.1-alpine
+FROM golang:1.27.2-alpine
 
 LABEL maintainer="Adrian Lapierre <al@alapierre.io>"
 ARG TARGETARCH
